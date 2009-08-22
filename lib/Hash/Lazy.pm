@@ -23,21 +23,85 @@ __END__
 
 =head1 NAME
 
-Hash::Lazy -
+Hash::Lazy - A Hash implementation with lazy evaluation feature
 
 =head1 SYNOPSIS
 
+Here's a fibonacci number calucator, recursively defined, memoized:
+
   use Hash::Lazy;
+  my $fib = Hash { my ($h, $k)= @_; return $h->{$k-1} + $h->{$k-2} };
+  $fib->{0} = 0;
+  $fib->{1} = 1;
+
+  say $fib->{10}; # 55
 
 =head1 DESCRIPTION
 
-Hash::Lazy is
+Hash::Lazy is a way to have a lazy evaluated hash in your
+program. Unlike other C<Hash::*> modules, it doesn't work on real hash
+variables (those with % sigil). Read on to see how it works.
+
+This module exports a keyword C<Hash> by default. If you cannot import
+this keyword in your current namespace for any reasons, you can
+re-named to 'lazy_hash' (or any other names or your choice) by saying:
+
+    use Hash::Lazy Hash => { -as => 'lazy_hash' };
+
+This C<Hash> keyword construct and returns an object that acts exactly
+like a normal hash reference. It requies a code block as its only
+argument. The block will be the builder to build the value of the
+wanted key. Therefore, the current hash object and the key will be the
+block arguments. This block need to either returns the value, or sets
+it back to C<$hash>.
+
+    # returns it
+    $next = Hash {
+        my ($hash, $key) = @_;
+        return $key + 1;
+    };
+
+    # or assign it
+    $next = Hash {
+        my ($hash, $key) = @_;
+        $hash->{$key} = $key + 1;
+    };
+
+The later takes advantages of the former if you do both.
+
+The returned object is just like a hash reference, therefore it's safe to assign values to it, or clear it:
+
+    # Clear all previously calculated values, and resets the seed.
+    %$fib = ();
+    $fib->{0} = 1;
+    $fib->{1} = 1;
+
+Notice that it's not ok to copy it to a hash:
+
+    %fib = %$fib;
+
+This basically freeze the magic-ness and the resulting %fib becomes
+static. The builder will not be called through any access to the
+%fib hash. Please be aware of this if you intend to do so.
+
+The example code of fibonacci number above are also available at
+examples/fib.pl in the distribution tarball, or at
+L<http://cpansearch.perl.org/src/GUGOD/Hash-Lazy-0.01/examples/fib.pl>.
 
 =head1 AUTHOR
 
 Kang-min Liu E<lt>gugod@gugod.orgE<gt>
 
 =head1 SEE ALSO
+
+Other lazy evaluation modules on CPAN, like L<Scalar::Lazy>,
+L<Tie::Array::Lazy>, L<Variable::Lazy>, L<Data::Lazy>, L<Data::Thunk>,
+L<Scalar::Defer>, L<Object::Lazy>.
+
+The Ruby Hash class constructor L<http://www.ruby-doc.org/core/classes/Hash.html>.
+
+The Perl 6 version of fibonacciy number calculation is really awesome,
+L<http://en.wikibooks.org/wiki/Fibonacci_number_program#Perl_6>.
 
 =head1 LICENSE AND COPYRIGHT
 
