@@ -1,11 +1,20 @@
 package Hash::Lazy::Tie;
 use strict;
 use warnings;
+
+BEGIN {
+    require Tie::Hash;
+    our @ISA = qw(Tie::ExtraHash);
+}
+
 use Carp qw(confess);
-use parent 'Tie::Hash';
 use self;
 
-use constant USAGE => 'my %h; tie %h, "Hash::Lazy::Tie", $builder, \%h;';
+use constant USAGE   => 'my %h; tie %h, "Hash::Lazy::Tie", $builder, \%h;';
+
+use constant STORAGE => 0;
+use constant BUILDER => 1;
+use constant TIED    => 2;
 
 sub TIEHASH {
     my ($builder, $tied) = @args;
@@ -13,38 +22,17 @@ sub TIEHASH {
     confess "The use of Hash::Lazy::Tie requires passing the hash variable that it's tying to. Usage: " . USAGE
         unless defined($tied);
 
-    return bless {
-        builder => $builder,
-        tied     => $tied,
-        storage  => {}
-    }, $self;
-}
-
-sub STORE {
-    my ($key, $value) = @args;
-    $self->{storage}{$key} = $value;
+    return bless [{}, $builder, $tied], $self;
 }
 
 sub FETCH {
     my ($key) = @args;
 
-    return $self->{storage}{$key} if exists $self->{storage}{$key};
+    return $self->[STORAGE]{$key} if exists $self->[STORAGE]{$key};
 
-    my $ret = $self->{builder}->($self->{tied}, $key);
-    $self->{storage}{$key} = $ret unless exists $self->{storage}{$key};
-    return $self->{storage}{$key};
-}
-
-sub DELETE {
-    my ($key) = @args;
-
-    delete $self->{storage}{$key};
-}
-
-sub CLEAR {
-    for my $key (keys %{$self->{storage}}) {
-        delete $self->{storage}{$key};
-    }
+    my $ret = $self->[BUILDER]->($self->[TIED], $key);
+    $self->[STORAGE]{$key} = $ret unless exists $self->[STORAGE]{$key};
+    return $self->[STORAGE]{$key};
 }
 
 1;
