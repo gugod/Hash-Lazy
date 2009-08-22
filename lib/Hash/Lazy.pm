@@ -4,6 +4,19 @@ use strict;
 use warnings;
 our $VERSION = '0.01';
 
+use Sub::Exporter -setup => {
+    exports => [ qw(Hash) ],
+    groups => { default => [ qw(Hash) ] }
+};
+
+use Hash::Lazy::Tie;
+sub Hash(&) {
+    my $cb = shift;
+    my %h = ();
+    tie %h, 'Hash::Lazy::Tie', $cb, \%h;
+    return \%h;
+}
+
 1;
 __END__
 
@@ -57,4 +70,3 @@ SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGES.
 
 =cut
-
