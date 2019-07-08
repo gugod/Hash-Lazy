@@ -1,0 +1,13 @@
+{
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/gugod/Hash-Lazy/issues"
+      },
+      "homepage" : "https://github.com/gugod/Hash-Lazy",
+      "repository" : {
+         "url" : "git://github.com/gugod/Hash-Lazy.git",
+         "web" : "https://github.com/gugod/Hash-Lazy"
+      }
+   },
+    "x_static_install" : 1
+}
