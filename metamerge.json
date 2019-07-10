@@ -1,4 +1,5 @@
 {
+   "name": "Hash-Lazy",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/gugod/Hash-Lazy/issues"
