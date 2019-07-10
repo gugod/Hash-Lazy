@@ -11,6 +11,7 @@ steps:
 
   - name: Build the distribution
     image: gugod/perl-testbox:5.28
+    commands:
       - cpanm -n App::ModuleBuildTiny
       - mbtiny dist
 
