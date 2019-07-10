@@ -39,7 +39,7 @@
    "provides" : {
       "Hash::Lazy" : {
          "file" : "lib/Hash/Lazy.pm",
-         "version" : "0.02"
+         "version" : "0.04"
       },
       "Hash::Lazy::Tie" : {
          "file" : "lib/Hash/Lazy/Tie.pm"
@@ -57,7 +57,7 @@
          "web" : "https://github.com/gugod/Hash-Lazy"
       }
    },
-   "version" : "0.02",
+   "version" : "0.04",
    "x_serialization_backend" : "JSON::PP version 4.02",
    "x_spdx_expression" : "MIT",
    "x_static_install" : 1
