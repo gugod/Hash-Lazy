@@ -19,19 +19,35 @@ steps:
   - name: Install (perl 5.30)
     image: perl:5.30
     commands:
+      - echo *.tar.gz
       - cpanm -q *.tar.gz
 
   - name: Install (perl 5.28)
     image: perl:5.28
     commands:
+      - echo *.tar.gz
       - cpanm -q *.tar.gz
 
   - name: Install (perl 5.26)
     image: perl:5.26
     commands:
+      - echo *.tar.gz
       - cpanm -q *.tar.gz
 
   - name: Install (perl 5.24)
     image: perl:5.24
     commands:
+      - echo *.tar.gz
+      - cpanm -q *.tar.gz
+
+  - name: Install (perl 5.20)
+    image: perl:5.20
+    commands:
+      - echo *.tar.gz
+      - cpanm -q *.tar.gz
+
+  - name: Install (perl 5.18)
+    image: perl:5.18
+    commands:
+      - echo *.tar.gz
       - cpanm -q *.tar.gz
