@@ -6,8 +6,12 @@ steps:
     image: gugod/perl-testbox:5.28
     commands:
       - cpanm --installdeps .
-      - cpanm -n App::ModuleBuildTiny Test2::Harness
+      - cpanm -n Test2::Harness
       - yath --qvf
+
+  - name: Build the distribution
+    image: gugod/perl-testbox:5.28
+      - cpanm -n App::ModuleBuildTiny
       - mbtiny dist
 
   - name: Install Distribution
