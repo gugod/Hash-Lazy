@@ -5,14 +5,14 @@ steps:
   - name: Test with perl 5.28
     image: gugod/perl-testbox:5.28
     commands:
-      - cpanm --installdeps .
-      - cpanm -n Test2::Harness
+      - cpanm --quiet --installdeps .
+      - cpanm --quiet -n Test2::Harness
       - yath --qvf
 
   - name: Build the distribution
     image: gugod/perl-testbox:5.28
     commands:
-      - cpanm -n App::ModuleBuildTiny
+      - cpanm --quiet -n App::ModuleBuildTiny
       - mbtiny dist
 
   - name: Install Distribution
